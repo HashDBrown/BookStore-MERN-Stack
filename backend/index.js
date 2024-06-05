@@ -5,6 +5,8 @@ import { Book } from "./models/bookModel.js";
 
 const app = express();
 
+app.use(express.json());
+
 app.get("/", (req, res) => {
     console.log(req);
     return res.status(234).send(`Welcome to MERN Stack Application`);
