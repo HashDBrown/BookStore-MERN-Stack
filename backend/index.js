@@ -9,11 +9,8 @@ app.get("/", (req, res) => {
     return res.status(234).send(`Welcome to MERN Stack Application`);
 });
 
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-});
-
-mongoose.connect(mongoDBURL)
+mongoose
+    .connect(mongoDBURL)
     .then(() => {
         console.log("MongoDB Connected Successfully");
         app.listen(PORT, () => {
