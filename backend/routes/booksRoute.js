@@ -1,22 +1,10 @@
-import express from "express";
-import { PORT, mongoDBURL } from "./config.js";
-import mongoose from "mongoose";
-import { Book } from "./models/bookModel.js";
-import booksRoute from "./routes/booksRoute.js";
+import express from 'express';
+import { Book } from "../models/bookModel.js";
 
-const app = express();
-
-app.use(express.json());
-
-app.get("/", (req, res) => {
-    console.log(req);
-    return res.status(234).send(`Welcome to MERN Stack Application`);
-});
-
-app.use("/books", booksRoute);
+const router = express.Router();
 
 // Route for saving new book
-app.post('/books', async (req, res) => {
+router.post('/', async (req, res) => {
     try {
         if (!req.body.title || !req.body.author || !req.body.publishYear) {
             return res.status(400).send({ message: 'Please fill all required fields' });
@@ -38,7 +26,7 @@ app.post('/books', async (req, res) => {
 });
 
 //Route for getting all books
-app.get('/books', async (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const books = await Book.find();
 
@@ -54,7 +42,7 @@ app.get('/books', async (req, res) => {
 });
 
 //Route for getting one book by id
-app.get('/books/:id', async (req, res) => {
+router.get('/:id', async (req, res) => {
     try {
 
         const { id } = req.params;
@@ -70,9 +58,8 @@ app.get('/books/:id', async (req, res) => {
     }
 });
 
-
 //Route for getting one book by id
-app.put('/books/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const { title, author, publishYear } = req.body;
@@ -96,7 +83,7 @@ app.put('/books/:id', async (req, res) => {
 });
 
 //Route for deleting one book by id
-app.delete('/books/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const { id } = req.params;
         const result = await Book.findByIdAndDelete(id);
@@ -113,14 +100,4 @@ app.delete('/books/:id', async (req, res) => {
     }
 });
 
-mongoose
-    .connect(mongoDBURL)
-    .then(() => {
-        console.log("MongoDB Connected Successfully");
-        app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
-        });
-    })
-    .catch((err) => {
-        console.log(err);
-    });
+export default router;
