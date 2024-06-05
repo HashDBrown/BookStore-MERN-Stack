@@ -15,6 +15,16 @@ app.get("/", (req, res) => {
 
 app.use("/books", booksRoute);
 
+//middleware for handling cors errors
+//Option 1: Allow all origins with Defualt of cors(*)
+app.use(cors());
+//Option 2: Allow custom origin
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: "GET,POST,PUT,DELETE",
+    allowedHeaders: "Content-Type",
+}));
+
 // Route for saving new book
 app.post('/books', async (req, res) => {
     try {
